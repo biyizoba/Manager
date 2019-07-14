@@ -9,25 +9,26 @@ const RouterComponent = () => {
         <Router >
             <Scene key="root" hideNavBar>
 
-                <Scene key="auth" titleStyle={{ textAlign: 'center', flex: 1 }}>
-                    <Scene key="login" component={LoginForm} title="please Login" initial />
+                <Scene key="auth" titleStyle={{ textAlign: 'center', flex: 1 }} initial>
+                    <Scene key="login" component={LoginForm} title="Login" />
                 </Scene>
 
-                <Scene key="main">
-
-
-
-                    
-                    <Scene rightTitle="+"
+                <Scene key="main" >
+                    <Scene
+                        rightTitle="+"
                         onRight={() => Actions.employeeCreate()}
                         key="employeeList"
                         component={EmployeeList}
                         title="Employees"
                         initial
                     />
-
-                    <Scene key="employeeCreate" component={EmployeeCreate} title="Create Employee" />
+                    <Scene
+                        key="employeeCreate"
+                        component={EmployeeCreate}
+                        title="Create Employee"
+                    />
                 </Scene>
+
             </Scene>
         </Router>
     );
