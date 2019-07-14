@@ -1,60 +1,41 @@
 import _ from 'lodash';
-import React, { Component } from 'react';
-import { View, Text, FlatList, TouchableHighlight } from 'react-native';
-import { connect } from 'react-redux';
-import { fetchEmployeesForUser } from '../actions';
+import React, {Component} from 'react';
+import {View, Text, FlatList} from 'react-native';
+import {connect} from 'react-redux';
+import {employeesFetchSuccess} from '../actions';
 import ListItem from './ListItem'
 
 
 
 class EmployeeList extends Component {
-    componentDidMount() {
-        this.props.fetchEmployeesForUser();
+    componentWillMount(){
+        this.props.employeesFetchSuccess();
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.employees.length !== this.props.employees.length) {
-            this.props.fetchEmployeesForUser();
+          this.props.employeesFetchSuccess();
         }
     }
 
     render() {
-        console.log('EmployeeList: employees list is ', this.props.employees);
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
-                {/* {this.props.loading ? <ActivityIndicator size={'large'} /> : */}
-                <FlatList
-                    refreshing={this.props.loading}
-                    onRefresh={() => this.props.fetchEmployeesForUser()}
-                    data={this.props.employees}
-                    renderItem={({ item }) => this.renderListItem(item)}
-                    keyExtractor={(item, index) => item.id}
-                    ListEmptyComponent={() => this.renderEmptyList()}
-                />
-                {/* } */}
-            </View>
+            // <View>
+            <FlatList
+                data={this.props.employees}
+                renderItem={({ item }) => <ListItem employees={item} />}
+                keyExtractor={(item) => item.uid}
+            />
+            // </View>
         );
     }
-
-    renderListItem = (item) => {
-        console.log('EmployeeList: renderListItem item is ', item);
-        return (
-            <TouchableHighlight onPress={() => alert(item.name+ " works on "+ item.shift+ ", you can reach him on "+ item.phone)}>
-                <ListItem employee={item} />
-            </TouchableHighlight>
-        )
-    }
-
-    renderEmptyList = () => (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>No Employees found.</Text>
-        </View>
-    )
+    
 }
 
-const mapStateToProps = ({ employeeList }) => {
-    const { employees, loading, error } = employeeList;
-    return { employees, loading, error };
-}
+const mapStateToProps = state => {
+    const employees = _.map(state.employees, (val, uid) => 
+    ({...val, uid}));
 
-export default connect(mapStateToProps, { fetchEmployeesForUser })(EmployeeList);
+    return {employees};
+}
+export default connect(mapStateToProps, {employeesFetchSuccess})(EmployeeList);

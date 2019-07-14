@@ -6,9 +6,4 @@ export const LOGIN_USER = 'login_user';
 
 export const EMPLOYEE_UPDATE = 'employee_update';
 export const EMPLOYEE_CREATE = 'employee_create';
-export const FETCH_EMPLOYEES_SUCCESSFUL = 'employees_fetch_success';
-export const FETCHING_EMPLOYEES_FAILED = 'employees_fetch_failed';
-export const FETCHING_EMPLOYEES = 'fetching_employees';
-export const CREATING_EMPLOYEE = 'creating_employee_info';
-export const UPDATING_EMPLOYEE = 'updating_employee_info';
-export const DELETING_EMPLOYEE = 'deleting_employee_info';
+export const EMPLOYEES_FETCH_SUCCESS = 'employees_fetch_success'
