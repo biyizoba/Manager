@@ -34,7 +34,7 @@ export const loginUser = ({ email, password }) => {
                     // example of how to provide your own custom error message.
                     // how to test, uncomment line 37, turn off the network on your emulator
                     // try to login.
-                    // error.message = 'We\'re having issues connecting to the internet, please ensure your device is connected and try again.';
+                    error.message = 'We are having issues connecting to the internet, please ensure your device is connected and try again.';
                     loginUserFail(dispatch, error.message);
                 } else if (error.code === "auth/user-not-found") {
                     //todo - would be probably smart not to automatically call 

@@ -2,12 +2,20 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { View, Text, FlatList, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchEmployeesForUser } from '../actions';
-import ListItem from './ListItem'
+import { fetchEmployeesForUser, employeeCreate } from '../actions';
+import ListItem from './ListItem';
+import {CardSection, Card, Button } from './commons';
+import { Actions } from 'react-native-router-flux';
+
+
 
 
 
 class EmployeeList extends Component {
+    onPressButton() {
+        Actions.employeeEdit({employee: this.props.employee});
+    }
+
     componentDidMount() {
         this.props.fetchEmployeesForUser();
     }
@@ -39,9 +47,17 @@ class EmployeeList extends Component {
     renderListItem = (item) => {
         console.log('EmployeeList: renderListItem item is ', item);
         return (
-            <TouchableHighlight onPress={() => alert(item.name+ " works on "+ item.shift+ ", you can reach him on "+ item.phone)}>
-                <ListItem employee={item} />
-            </TouchableHighlight>
+            <Card>
+                <TouchableHighlight onPress={() => alert(item.name + " works on " + item.shift + ", you can reach him on " + item.phone)}>
+                    <ListItem employee={item} />
+                </TouchableHighlight>
+                <CardSection>
+                    <Button onPress={this.onPressButton.bind(this)}>
+                        Edit
+                     </Button>
+                </CardSection>
+
+            </Card>
         )
     }
 
@@ -57,4 +73,4 @@ const mapStateToProps = ({ employeeList }) => {
     return { employees, loading, error };
 }
 
-export default connect(mapStateToProps, { fetchEmployeesForUser })(EmployeeList);
+export default connect(mapStateToProps, { fetchEmployeesForUser, employeeCreate})(EmployeeList);
