@@ -2,11 +2,14 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import EmployeeForm from './EmployeeForm';
-import { employeeUpdate, updateEmployeeInfo } from '../actions'
-import { Card, CardSection, Button } from './commons'
+import { employeeUpdate, updateEmployeeInfo, employeeDelete } from '../actions'
+import { Card, CardSection, Button, Confirm } from './commons';
+import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
 
 class EmployeeEdit extends Component {
+    state= { showModal: false };
+
     componentDidMount() {
         console.log('EmployeeEdit: value of props is ', this.props);
         _.each(this.props.employee, (value, prop) => {
@@ -29,6 +32,25 @@ class EmployeeEdit extends Component {
             Actions.pop({ type: 'reset' });
         }
     }
+    
+
+    onTextPress() {
+        const {phone, shift} = this.props;
+
+        Communications.text(phone, `Your upcoming shift is on ${shift}`);
+    }
+
+
+    onAccept(){
+        const {uid} = this.props.employee;
+        this.props.employeeDelete({uid});
+
+        
+    };
+
+    onDecline(){
+        this.setState({showModal:false});
+    }
 
     render() {
         return (
@@ -39,6 +61,25 @@ class EmployeeEdit extends Component {
                         Save Changes
                     </Button>
                 </CardSection>
+                <CardSection>
+                    <Button onPress={this.onTextPress.bind(this)}>
+                        Text Schedule
+                    </Button>
+                </CardSection>
+
+                <CardSection>
+                    <Button onPress={() => this.setState({showModal: !this.state.showModal})}>
+                        Fire Employee
+                    </Button>
+                </CardSection>
+
+                <Confirm
+                    visible={this.state.showModal}
+                    onAccept={this.onAccept.bind(this)}
+                    onDecline={this.onDecline.bind(this)}
+                >
+                    Are you sure you want to fire this employee?
+                </Confirm>
             </Card>
         );
     }
@@ -49,4 +90,6 @@ const mapStateToProps = (state) => {
     return { name, phone, shift }
 }
 
-export default connect(mapStateToProps, { employeeUpdate, updateEmployeeInfo })(EmployeeEdit);
+export default connect(mapStateToProps, 
+{ employeeUpdate, updateEmployeeInfo, employeeDelete })
+(EmployeeEdit);

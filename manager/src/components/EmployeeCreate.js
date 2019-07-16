@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { View } from 'react-native';
 import {connect} from 'react-redux';
-import {employeeUpdate, employeeCreate} from '../actions';
+import {employeeUpdate, employeeCreate, employeeResetForm} from '../actions';
 import {Card, CardSection, Button} from './commons';
 import EmployeeForm from './EmployeeForm';
 
@@ -9,6 +9,10 @@ class EmployeeCreate extends Component {
     onButtonPress() {
         const{name, phone, shift} = this.props;
         this.props.employeeCreate({name,phone,shift: shift || 'Monday'})
+    }
+
+    componentWillMount(){
+        this.props.employeeResetForm();
     }
 
     render() {
@@ -32,5 +36,5 @@ const mapStateToProps = (state) => {
     return {name, phone, shift}
 }
 
-export default connect(mapStateToProps, {employeeUpdate, employeeCreate})(EmployeeCreate);
+export default connect(mapStateToProps, {employeeUpdate, employeeResetForm, employeeCreate})(EmployeeCreate);
 

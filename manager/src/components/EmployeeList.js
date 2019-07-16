@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { View, Text, FlatList, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchEmployeesForUser, employeeCreate } from '../actions';
+import { fetchEmployeesForUser, employeeCreate, employeeResetForm } from '../actions';
 import ListItem from './ListItem';
 import {CardSection, Card, Button } from './commons';
 import { Actions } from 'react-native-router-flux';
@@ -20,6 +20,10 @@ class EmployeeList extends Component {
 
     componentDidMount() {
         this.props.fetchEmployeesForUser();
+        this.props.employeeResetForm();
+        // this.props.setEmployeee('name', '')
+        // this.props.setEmployeee('phone', '')
+        // this.props.setEmployeee('shift', '')
     }
 
     componentDidUpdate(prevProps) {
@@ -76,4 +80,4 @@ const mapStateToProps = ({ employeeList }) => {
     return { employees, loading, error };
 }
 
-export default connect(mapStateToProps, { fetchEmployeesForUser, employeeCreate})(EmployeeList);
+export default connect(mapStateToProps, { fetchEmployeesForUser, employeeCreate, employeeResetForm})(EmployeeList);

@@ -14,3 +14,4 @@ export const UPDATING_EMPLOYEE = 'updating_employee_info';
 export const UPDATING_EMPLOYEE_SUCCESS = 'updating_employee_info_success';
 export const UPDATING_EMPLOYEE_FAILURE = 'updating_employee_info_failure';
 export const DELETING_EMPLOYEE = 'deleting_employee_info';
+export const EMPLOYEE_RESET_FORM = 'employee_reset_form';

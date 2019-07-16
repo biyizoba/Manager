@@ -7,7 +7,8 @@ import {
     FETCHING_EMPLOYEES_FAILED, 
     UPDATING_EMPLOYEE,
     UPDATING_EMPLOYEE_SUCCESS,
-    UPDATING_EMPLOYEE_FAILURE
+    UPDATING_EMPLOYEE_FAILURE,
+    EMPLOYEE_RESET_FORM
 } from './type';
 import { Actions } from 'react-native-router-flux';
 
@@ -72,3 +73,21 @@ export const fetchEmployeesForUser = () => {
             // });
     };
 }
+
+export const employeeDelete = ({uid}) => {
+    const {currentUser} = firebase.auth();
+
+    return() => {
+        firebase.database().ref(`/users/${currentUser.uid}/employees/${uid}`)
+            .remove()
+            .then(() => {
+                Actions.employeeList({type: 'reset'})
+            })
+    };
+};
+
+export const employeeResetForm = () => {
+    return {
+      type: EMPLOYEE_RESET_FORM
+    }
+  }
