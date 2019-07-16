@@ -7,13 +7,15 @@ import ListItem from './ListItem';
 import {CardSection, Card, Button } from './commons';
 import { Actions } from 'react-native-router-flux';
 
-
-
-
-
 class EmployeeList extends Component {
-    onPressButton() {
-        Actions.employeeEdit({employee: this.props.employee});
+
+    constructor(props) {
+        super(props);
+        this.onPressButton = this.onPressButton.bind(this);
+    }
+
+    onPressButton(employee) {
+        Actions.employeeEdit({ employee: employee });
     }
 
     componentDidMount() {
@@ -22,6 +24,7 @@ class EmployeeList extends Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.employees.length !== this.props.employees.length) {
+            console.log('EmployeeList: componentDidUpdate employee props don\'t match ', this.props.employees);
             this.props.fetchEmployeesForUser();
         }
     }
@@ -44,15 +47,15 @@ class EmployeeList extends Component {
         );
     }
 
-    renderListItem = (item) => {
-        console.log('EmployeeList: renderListItem item is ', item);
+    renderListItem = (employee) => {
+        console.log('EmployeeList: renderListItem employee is ', employee);
         return (
             <Card>
-                <TouchableHighlight onPress={() => alert(item.name + " works on " + item.shift + ", you can reach him on " + item.phone)}>
-                    <ListItem employee={item} />
+                <TouchableHighlight onPress={() => alert(employee.name + " works on " + employee.shift + ", you can reach him on " + employee.phone)}>
+                    <ListItem employee={employee} />
                 </TouchableHighlight>
                 <CardSection>
-                    <Button onPress={this.onPressButton.bind(this)}>
+                    <Button onPress={() => this.onPressButton(employee)}>
                         Edit
                      </Button>
                 </CardSection>

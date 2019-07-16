@@ -5,8 +5,6 @@ import {
     LOGIN_USER
 } from '../actions/type'
 
-
-
 const INITAL_STATE = {
     email: '',
     password: '',

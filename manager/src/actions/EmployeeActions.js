@@ -4,7 +4,10 @@ import {
     EMPLOYEE_CREATE, 
     FETCH_EMPLOYEES_SUCCESSFUL, 
     FETCHING_EMPLOYEES, 
-    FETCHING_EMPLOYEES_FAILED 
+    FETCHING_EMPLOYEES_FAILED, 
+    UPDATING_EMPLOYEE,
+    UPDATING_EMPLOYEE_SUCCESS,
+    UPDATING_EMPLOYEE_FAILURE
 } from './type';
 import { Actions } from 'react-native-router-flux';
 
@@ -27,6 +30,23 @@ export const employeeCreate = ({ name, phone, shift }) => {
             });
     };
 };
+
+export const updateEmployeeInfo = (employee) => {
+    const { currentUser } = firebase.auth();
+    console.log('EmployeeActions: about to updateEmployee info ', employee);
+    return (dispatch) => {
+        dispatch({ type: UPDATING_EMPLOYEE })
+        firebase.database().ref(`/users/${currentUser.uid}/employees/${employee.id}`)
+            .set(employee)
+            .then(() => {
+                dispatch({ type: UPDATING_EMPLOYEE_SUCCESS })
+                Actions.pop({ type: 'reset' })
+            }).catch(error => {
+                dispatch({ type: UPDATING_EMPLOYEE_FAILURE })
+                console.log('EmployeeActions: employee update failed with error ', error)
+            });
+    };
+}
 
 export const fetchEmployeesForUser = () => {
     const currentUser  = firebase.auth().currentUser;
